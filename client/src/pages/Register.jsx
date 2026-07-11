@@ -12,7 +12,7 @@ const Register = () => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  const result = await dispatch(registerUser({ email, password }));
+  const result = await dispatch(registerUser({ name, email, password }));
   if (registerUser.fulfilled.match(result)) {
     setEmail('');
     setPassword('');
