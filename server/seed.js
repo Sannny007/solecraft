@@ -1,0 +1,58 @@
+import mongoose from "mongoose";
+import dotenv from 'dotenv';
+import Product from './models/product.js';
+
+dotenv.config();
+
+const products = [
+  {
+    name: 'Classic Runner',
+    description: 'A cutomizable everyday sneaker',
+    basePrice: 2999,
+    modelPath: '/models/sneaker.glb',
+    customizableParts: [
+      { partName: 'sole', meshName: 'Sole_Mesh', colorOptions: ['#FFFFFF', '#000000', '#FF0000'] },
+      { partName: 'body', meshName: 'Body_Mesh', colorOptions: ['#FFFFFF', '#0000FF', '#00FF00'] },
+    ],
+  },
+  {
+   name: 'Street Trainer',
+   description: 'Bold streetwear-inspired sneaker',
+   basePrice: 3499,
+   modelPath: '/models/sneaker2.glb',
+   customizableParts: [
+    { partName: 'sole', meshName: 'Sole_Mesh', colorOptions: ['#111111', '#FFD700', '#FF4500'] },
+    { partName: 'body', meshName: 'Body_Mesh', colorOptions: ['#000000', '#8A2BE2', '#00CED1'] },
+    { partName: 'laces', meshName: 'Laces_Mesh', colorOptions: ['#FFFFFF', '#000000'] },
+   ],
+  },
+  {
+    name: 'Retro Court',
+    description: 'Vintage-style low-top sneaker',
+    basePrice: 2799,
+    modelPath: '/models/sneaker3.glb',
+    customizableParts: [
+      { partName: 'sole', meshName: 'Sole_Mesh', colorOptions: ['#FFFFFF', '#DC143C'] },
+      { partName: 'body', meshName: 'Body_Mesh', colorOptions: ['#F5F5DC', '#2F4F4F', '#800000'] },
+    ],
+  },
+];
+
+
+const seedProduct = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("MongoDB connected for seeding");
+
+    await Product.deleteMany();
+    await Product.insertMany(products);
+
+    console.log(`${products.length} Products seeded successfully`);
+    process.exit();
+  } catch ( error ) {
+    console.error('Seeding failed:', error.message);
+    process.exit(1);
+  }
+};
+
+seedProduct();
