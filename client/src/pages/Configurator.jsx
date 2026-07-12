@@ -6,6 +6,7 @@ import { OrbitControls } from '@react-three/drei';
 import { fetchProducts } from '../redux/slices/productSlice';
 import SneakerModel from '../components/SneakerModel';
 import { addToCart } from '../redux/slices/cartSlice';
+import Spinner from '../components/Spinner';
 
 const SWATCHES = ['#8B3A3A', '#1A1A1A', '#FFFFFF', '#2E5C8A', '#C9A227'];
 
@@ -24,7 +25,7 @@ const Configurator = () => {
 
   const product = items.find((p) => p._id === id);
 
-  if (loading) return <p className="p-6">Loading....</p>;
+  if (loading) return <Spinner />;
   if (!product) return <p className="p-6">Product not found</p>;
 
   // ... rest stays the same

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import Product from './models/product.js';
 
@@ -7,8 +7,9 @@ dotenv.config();
 const products = [
   {
     name: 'Classic Runner',
-    description: 'A cutomizable everyday sneaker',
+    description: 'A customizable everyday sneaker',
     basePrice: 2999,
+    image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=500',
     modelPath: '/models/sneaker.glb',
     customizableParts: [
       { partName: 'sole', meshName: 'Sole_Mesh', colorOptions: ['#FFFFFF', '#000000', '#FF0000'] },
@@ -16,20 +17,22 @@ const products = [
     ],
   },
   {
-   name: 'Street Trainer',
-   description: 'Bold streetwear-inspired sneaker',
-   basePrice: 3499,
-   modelPath: '/models/sneaker2.glb',
-   customizableParts: [
-    { partName: 'sole', meshName: 'Sole_Mesh', colorOptions: ['#111111', '#FFD700', '#FF4500'] },
-    { partName: 'body', meshName: 'Body_Mesh', colorOptions: ['#000000', '#8A2BE2', '#00CED1'] },
-    { partName: 'laces', meshName: 'Laces_Mesh', colorOptions: ['#FFFFFF', '#000000'] },
-   ],
+    name: 'Street Trainer',
+    description: 'Bold streetwear-inspired sneaker',
+    basePrice: 3499,
+    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500',
+    modelPath: '/models/sneaker2.glb',
+    customizableParts: [
+      { partName: 'sole', meshName: 'Sole_Mesh', colorOptions: ['#111111', '#FFD700', '#FF4500'] },
+      { partName: 'body', meshName: 'Body_Mesh', colorOptions: ['#000000', '#8A2BE2', '#00CED1'] },
+      { partName: 'laces', meshName: 'Laces_Mesh', colorOptions: ['#FFFFFF', '#000000'] },
+    ],
   },
   {
     name: 'Retro Court',
     description: 'Vintage-style low-top sneaker',
     basePrice: 2799,
+    image: 'https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=500',
     modelPath: '/models/sneaker3.glb',
     customizableParts: [
       { partName: 'sole', meshName: 'Sole_Mesh', colorOptions: ['#FFFFFF', '#DC143C'] },
@@ -38,21 +41,20 @@ const products = [
   },
 ];
 
-
-const seedProduct = async () => {
+const seedProducts = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    console.log("MongoDB connected for seeding");
+    console.log('MongoDB connected for seeding');
 
     await Product.deleteMany();
     await Product.insertMany(products);
 
-    console.log(`${products.length} Products seeded successfully`);
+    console.log(`${products.length} products seeded successfully`);
     process.exit();
-  } catch ( error ) {
-    console.error('Seeding failed:', error.message);
+  } catch (err) {
+    console.error('Seeding failed:', err.message);
     process.exit(1);
   }
 };
 
-seedProduct();
+seedProducts();

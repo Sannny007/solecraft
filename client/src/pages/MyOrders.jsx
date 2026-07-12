@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getMyOrders } from '../redux/api/orders';
+import Spinner from '../components/Spinner';
 
 
 const MyOrders = () => {
@@ -22,7 +23,7 @@ const MyOrders = () => {
     fetchOrders();
   }, [token]);
 
-  if (loading) return <p className='p-6'>Loading orders....</p>;
+  if (loading) return <Spinner />
 
   if (orders.length === 0) {
     return(
