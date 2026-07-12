@@ -15,6 +15,7 @@ const Configurator = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { items, loading } = useSelector((state) => state.products);
+  const [added, setAdded] = useState(false);
 
   const [colors, setColors] = useState({});
 
@@ -36,7 +37,8 @@ const Configurator = () => {
       basePrice: product.basePrice,
       colors,
     }));
-    alert('Added to cart!');
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000); // revert after 2 sec
   };
 
   return (
@@ -101,9 +103,10 @@ const Configurator = () => {
 
         <button
           onClick={handleAddToCart}
-          className="mt-4 bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-semibold"
+          className={`mt-4 px-6 py-3 rounded-lg font-semibold transition-colors ${added ? 'bg-green-600' : 'bg-purple-600 hover:bg-purple-700'
+            }`}
         >
-          Add to Cart
+          {added ? 'Added to Cart ✓' : 'Add to Cart'}
         </button>
       </div>
     </div>
