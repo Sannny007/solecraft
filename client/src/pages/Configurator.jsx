@@ -7,6 +7,7 @@ import { fetchProducts } from '../redux/slices/productSlice';
 import SneakerModel from '../components/SneakerModel';
 import { addToCart } from '../redux/slices/cartSlice';
 import Spinner from '../components/Spinner';
+import gsap from 'gsap';
 
 const SWATCHES = ['#8B3A3A', '#1A1A1A', '#FFFFFF', '#2E5C8A', '#C9A227'];
 
@@ -28,7 +29,15 @@ const Configurator = () => {
   if (loading) return <Spinner />;
   if (!product) return <p className="p-6">Product not found</p>;
 
-  // ... rest stays the same
+  const handleAddToCart = () => {
+    dispatch(addToCart({
+      productId: product._id,
+      name: product.name,
+      basePrice: product.basePrice,
+      colors,
+    }));
+    alert('Added to cart!');
+  };
 
   return (
     <div className="p-6">
@@ -54,8 +63,15 @@ const Configurator = () => {
             {SWATCHES.map((color) => (
               <button
                 key={`body-${color}`}
-                onClick={() => setColors((prev) => ({ ...prev, 'rb1004_rb_r_0': color }))}
-                className="w-10 h-10 rounded-full border-2 border-gray-600 hover:border-white transition"
+                onClick={(e) => {
+                  setColors((prev) => ({ ...prev, 'rb1004_rb_r_0': color }));
+                  gsap.fromTo(
+                    e.currentTarget,
+                    { scale: 1.3 },
+                    { scale: 1, duration: 0.3, ease: 'back.out(3)' }
+                  );
+                }}
+                className="w-10 h-10 rounded-full border-2 border-gray-600 hover:border-white transition-colors"
                 style={{ backgroundColor: color }}
               />
             ))}
@@ -68,24 +84,27 @@ const Configurator = () => {
             {SWATCHES.map((color) => (
               <button
                 key={`sole-${color}`}
-                onClick={() => setColors((prev) => ({ ...prev, 'rb1000_rb_r_0': color }))}
-                className="w-10 h-10 rounded-full border-2 border-gray-600 hover:border-white transition"
+                onClick={(e) => {
+                  setColors((prev) => ({ ...prev, 'rb1000_rb_r_0': color }));
+                  gsap.fromTo(
+                    e.currentTarget,
+                    { scale: 1.3 },
+                    { scale: 1, duration: 0.3, ease: 'back.out(3)' }
+                  );
+                }}
+                className="w-10 h-10 rounded-full border-2 border-gray-600 hover:border-white transition-colors"
                 style={{ backgroundColor: color }}
               />
             ))}
-            <button
-            onClick={() => {
-              dispatch(addToCart({
-                productId: product._id,
-                name: product.name,
-                basePrice: product.basePrice,
-                colors,
-              }));
-              alert('Added to cart!');
-            }}
-            className='mt-6 bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-semibold'>Add to cart</button>
           </div>
         </div>
+
+        <button
+          onClick={handleAddToCart}
+          className="mt-4 bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-semibold"
+        >
+          Add to Cart
+        </button>
       </div>
     </div>
   );
