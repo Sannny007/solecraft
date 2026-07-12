@@ -12,6 +12,7 @@ import Configurator from './pages/Configurator';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderSuccess from './pages/OrderSuccess';
+import MyOrders from './pages/MyOrders';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -31,6 +32,11 @@ const App = () => {
         <Route path='/register' element={<Register />} />
         <Route path='/cart' element={<Cart />} />
         <Route path="/product/:id" element={<Configurator />} />
+        <Route path="/my-orders" element={
+          <ProtectedRoutes>
+            <MyOrders />
+          </ProtectedRoutes>
+        } />
         <Route path="/checkout" element={
           <ProtectedRoutes>
             <Checkout />

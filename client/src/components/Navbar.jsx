@@ -16,19 +16,20 @@ const Navbar = () => {
 
   return (
     <nav className="bg-gray-800 px-6 py-4 flex justify-between items-center">
-      <Link to = "/" className="text-xl font-bold text-purple-400">SoleCraft</Link>
+      <Link to="/" className="text-xl font-bold text-purple-400">SoleCraft</Link>
       <div className="flex gap-4 items-center">
-        <Link to = "/" className="hover:text-purple-400">Home</Link>
+        <Link to="/" className="hover:text-purple-400">Home</Link>
         <Link to="/cart" className="hover:text-purple-400">Cart</Link>
         {token ? (
           <>
-          <span className="test-sm text-gray-300">Hi, {user?.name}</span>
-          <button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm">Logout</button>
+            <Link to="/my-orders" className="hover:text-purple-400">My Orders</Link>
+            <span className="text-sm text-gray-300">Hi, {user?.name}</span>
+            <button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm">Logout</button>
           </>
         ) : (
           <>
-          <Link to = "/login" className="hover:text-purple-400">Login</Link>
-          <Link to = "/register" className="hover:text-purple-400">Register</Link>
+            <Link to="/login" className="hover:text-purple-400">Login</Link>
+            <Link to="/register" className="hover:text-purple-400">Register</Link>
           </>
         )}
       </div>
