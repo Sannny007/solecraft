@@ -1,40 +1,82 @@
+import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Menu, X } from 'lucide-react';
 import { logout } from "../redux/slices/authSlice";
-
 
 const Navbar = () => {
   const { user, token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
     dispatch(logout());
     navigate('/login');
+    setMenuOpen(false);
   };
 
+  const closeMenu = () => setMenuOpen(false);
 
   return (
-    <nav className="bg-gray-800 px-6 py-4 flex justify-between items-center">
-      <Link to="/" className="text-xl font-bold text-purple-400">SoleCraft</Link>
-      <div className="flex gap-4 items-center">
-        <Link to="/" className="hover:text-purple-400">Home</Link>
-        <Link to="/cart" className="hover:text-purple-400">Cart</Link>
-        {token ? (
-          <>
-            <Link to="/my-orders" className="hover:text-purple-400">My Orders</Link>
-            <span className="text-sm text-gray-300">Hi, {user?.name}</span>
-            <button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm">Logout</button>
-          </>
-        ) : (
-          <>
-            <Link to="/login" className="hover:text-purple-400">Login</Link>
-            <Link to="/register" className="hover:text-purple-400">Register</Link>
-          </>
-        )}
+    <nav className="bg-gray-800 px-6 py-4 relative">
+      <div className="flex justify-between items-center">
+        <Link to="/" className="text-xl font-bold text-purple-400" onClick={closeMenu}>
+          SoleCraft
+        </Link>
+
+        {/* Desktop links - hidden on mobile */}
+        <div className="hidden md:flex gap-4 items-center">
+          <Link to="/" className="hover:text-purple-400">Home</Link>
+          <Link to="/cart" className="hover:text-purple-400">Cart</Link>
+          {token ? (
+            <>
+              <Link to="/my-orders" className="hover:text-purple-400">My Orders</Link>
+              <span className="text-sm text-gray-300">Hi, {user?.name}</span>
+              <button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm">
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="hover:text-purple-400">Login</Link>
+              <Link to="/register" className="hover:text-purple-400">Register</Link>
+            </>
+          )}
+        </div>
+
+        {/* Hamburger icon - visible only on mobile */}
+        <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
+          {menuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
+
+      {/* Mobile dropdown menu */}
+      {menuOpen && (
+        <div className="md:hidden mt-4 flex flex-col gap-3 pb-2">
+          <Link to="/" onClick={closeMenu} className="hover:text-purple-400">Home</Link>
+          <Link to="/cart" onClick={closeMenu} className="hover:text-purple-400">Cart</Link>
+          {token ? (
+            <>
+              <Link to="/my-orders" onClick={closeMenu} className="hover:text-purple-400">My Orders</Link>
+              <span className="text-sm text-gray-300">Hi, {user?.name}</span>
+              <button
+                onClick={handleLogout}
+                className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm w-fit"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" onClick={closeMenu} className="hover:text-purple-400">Login</Link>
+              <Link to="/register" onClick={closeMenu} className="hover:text-purple-400">Register</Link>
+            </>
+          )}
+        </div>
+      )}
     </nav>
   );
-}
+};
 
-export default Navbar
+export default Navbar;
