@@ -19,6 +19,7 @@ const Navbar = () => {
       <Link to = "/" className="text-xl font-bold text-purple-400">SoleCraft</Link>
       <div className="flex gap-4 items-center">
         <Link to = "/" className="hover:text-purple-400">Home</Link>
+        <Link to="/cart" className="hover:text-purple-400">Cart</Link>
         {token ? (
           <>
           <span className="test-sm text-gray-300">Hi, {user?.name}</span>

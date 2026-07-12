@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
+import OrderRoutes from './routes/orderRoutes.js';
 
 dotenv.config();
 connectDB();
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
+app.use('/api/orders', OrderRoutes);
 app.use('/api/products', productRoutes);
 app.get('/', (req, res) => {
   res.send('SoleCraft API is running');

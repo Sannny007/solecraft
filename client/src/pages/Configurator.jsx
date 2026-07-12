@@ -5,6 +5,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { fetchProducts } from '../redux/slices/productSlice';
 import SneakerModel from '../components/SneakerModel';
+import { addToCart } from '../redux/slices/cartSlice';
 
 const SWATCHES = ['#8B3A3A', '#1A1A1A', '#FFFFFF', '#2E5C8A', '#C9A227'];
 
@@ -71,6 +72,17 @@ const Configurator = () => {
                 style={{ backgroundColor: color }}
               />
             ))}
+            <button
+            onClick={() => {
+              dispatch(addToCart({
+                productId: product._id,
+                name: product.name,
+                basePrice: product.basePrice,
+                colors,
+              }));
+              alert('Added to cart!');
+            }}
+            className='mt-6 bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-semibold'>Add to cart</button>
           </div>
         </div>
       </div>
