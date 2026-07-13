@@ -1,7 +1,6 @@
 import express from "express";
 import Order from "../models/Order.js";
 import protect from "../middleWare/authMiddleware.js";
-import Router from "./authRoutes.js";
 
 const router = express.Router();
 
