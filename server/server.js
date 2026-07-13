@@ -13,7 +13,7 @@ const app = express();
 
 const allowedOrigins = process.env.CLIENT_URL
   ? process.env.CLIENT_URL.split(',')
-  : true; // allow all in local dev if not set
+  : true;
 
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
