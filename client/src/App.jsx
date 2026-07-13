@@ -24,7 +24,7 @@ const App = () => {
     }
   }, [dispatch])
   return (
-    <div className="min-h-screen text-[var(--ink)]">
+    <div className="min-h-screen text-(--ink)">
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />

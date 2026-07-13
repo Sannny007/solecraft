@@ -24,9 +24,9 @@ const Register = () => {
     <div className="min-h-[85vh] flex items-center justify-center px-4 py-12">
       <form onSubmit={handleSubmit} className="card w-full max-w-sm p-8 space-y-5 animate-fadeUp">
         <div className="text-center mb-2">
-          <UserPlus className="mx-auto mb-2 text-[var(--accent)]" size={28} />
+          <UserPlus className="mx-auto mb-2 text-(--accent)" size={28} />
           <h1 className="font-display text-3xl">JOIN SOLECRAFT</h1>
-          <p className="text-[var(--ink-dim)] text-sm mt-1">Start designing your own pair</p>
+          <p className="text-(--ink-dim) text-sm mt-1">Start designing your own pair</p>
         </div>
         <input
           type="text"
@@ -34,29 +34,29 @@ const Register = () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="input-field w-full"
-          required
-        />
+          required/>
+
         <input
           type="email"
           placeholder="joe@gmail.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="input-field w-full"
-          required
-        />
+          required/>
+
         <input
           type="password"
           placeholder="Enter your password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="input-field w-full"
-          required
-        />
+          required/>
+
         <button type="submit" disabled={loading} className="btn-primary w-full">
           {loading ? 'Creating account...' : 'Register'}
         </button>
-        {error && <p className="text-[var(--accent-2)] text-sm text-center">{error}</p>}
-        <p className="text-center text-sm text-[var(--ink-dim)]">
+        {error && <p className="text-(--accent-2) text-sm text-center">{error}</p>}
+        <p className="text-center text-sm text-(--ink-dim)">
           Already have an account? <Link to="/login" className="text-[var(--accent)] hover:underline">Login</Link>
         </p>
       </form>

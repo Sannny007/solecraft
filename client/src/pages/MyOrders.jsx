@@ -28,9 +28,9 @@ const MyOrders = () => {
   if (orders.length === 0) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center px-6 text-center animate-fadeIn">
-        <Package size={48} className="text-[var(--ink-dim)] mb-4" />
+        <Package size={48} className="text-(--ink-dim) mb-4" />
         <h1 className="font-display text-3xl mb-2">MY ORDERS</h1>
-        <p className="text-[var(--ink-dim)]">You haven't placed any orders yet.</p>
+        <p className="text-(--ink-dim)">You haven't placed any orders yet.</p>
       </div>
     );
   }
@@ -42,22 +42,22 @@ const MyOrders = () => {
         {orders.map((order, i) => (
           <div key={order._id} className="card p-5 animate-fadeUp" style={{ animationDelay: `${i * 0.08}s` }}>
             <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
-              <span className="text-sm text-[var(--ink-dim)] tracking-wide">
+              <span className="text-sm text-(--ink-dim) tracking-wide">
                 ORDER #{order._id.slice(-6).toUpperCase()}
               </span>
-              <span className="text-xs font-semibold bg-[var(--accent)] text-[var(--accent-ink)] px-3 py-1 rounded-full uppercase tracking-wide">
+              <span className="text-xs font-semibold bg-(--accent) text-(--accent-ink) px-3 py-1 rounded-full uppercase tracking-wide">
                 {order.status}
               </span>
             </div>
             <div className="space-y-1 mb-2">
               {order.items.map((item, idx) => (
-                <p key={idx} className="text-sm text-[var(--ink-dim)]">
+                <p key={idx} className="text-sm text-(--ink-dim)">
                   {item.name} &mdash; ₹{item.basePrice}
                 </p>
               ))}
             </div>
             <span className="shoe-tag text-xs">Total ₹{order.totalAmount}</span>
-            <p className="text-xs text-[var(--ink-dim)] mt-3">
+            <p className="text-xs text-(--ink-dim) mt-3">
               Placed on {new Date(order.createdAt).toLocaleDateString()}
             </p>
           </div>
