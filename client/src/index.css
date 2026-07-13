@@ -1,1 +1,165 @@
 @import "tailwindcss";
+
+/* ============================================
+   SOLECRAFT DESIGN TOKENS — sneaker-atelier theme
+   ============================================ */
+:root {
+  --bg: #0c0b0a;
+  --bg-alt: #161412;
+  --bg-card: #1b1917;
+  --ink: #f3ede2;
+  --ink-dim: #a89e8f;
+  --accent: #c8ff3d;      /* volt lime */
+  --accent-ink: #0c0b0a;
+  --accent-2: #ff5a36;    /* molten orange */
+  --line: rgba(243, 237, 226, 0.1);
+  --font-display: "Anton", "Impact", sans-serif;
+  --font-body: "Manrope", system-ui, sans-serif;
+}
+
+* { font-family: var(--font-body); }
+h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: 0.01em; }
+
+html, body, #root { min-height: 100%; }
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(200, 255, 61, 0.08), transparent),
+    radial-gradient(ellipse 60% 40% at 90% 10%, rgba(255, 90, 54, 0.06), transparent),
+    repeating-linear-gradient(115deg, rgba(243,237,226,0.025) 0px, rgba(243,237,226,0.025) 1px, transparent 1px, transparent 80px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+}
+
+/* ============================================
+   MOTION
+   ============================================ */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(200,255,61,0.35); } 50% { box-shadow: 0 0 0 8px rgba(200,255,61,0); } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes tagSwing { 0% { transform: rotate(-8deg); } 100% { transform: rotate(-3deg); } }
+
+.animate-fadeUp { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-fadeIn { animation: fadeIn 0.6s ease both; }
+.animate-float { animation: floatY 3.5s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.btn-primary {
+  font-family: var(--font-display);
+  letter-spacing: 0.03em;
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: 0.75rem 1.75rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, background 0.25s ease;
+  box-shadow: 0 0 0 0 rgba(200,255,61,0.4);
+}
+.btn-primary:hover { transform: translateY(-2px) scale(1.035); box-shadow: 0 10px 30px -8px rgba(200,255,61,0.45); }
+.btn-primary:active { transform: translateY(0) scale(0.97); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.btn-secondary {
+  font-family: var(--font-display);
+  letter-spacing: 0.03em;
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--line);
+  padding: 0.75rem 1.75rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.25s ease, background 0.25s ease;
+}
+.btn-secondary:hover { transform: translateY(-2px) scale(1.03); border-color: var(--accent); background: rgba(200,255,61,0.06); }
+.btn-secondary:active { transform: translateY(0) scale(0.97); }
+
+.btn-danger {
+  background: var(--accent-2);
+  color: #0c0b0a;
+  border-radius: 9999px;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
+}
+.btn-danger:hover { transform: translateY(-2px) scale(1.035); filter: brightness(1.1); }
+.btn-danger:active { transform: scale(0.97); }
+
+.icon-btn { transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.25s ease; }
+.icon-btn:hover { transform: scale(1.15) rotate(-4deg); color: var(--accent); }
+
+/* ============================================
+   CARDS (product / content)
+   ============================================ */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+}
+.card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(200,255,61,0.4);
+  box-shadow: 0 20px 40px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(200,255,61,0.1);
+}
+.card-glow-line {
+  position: absolute; inset: 0 0 auto 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease;
+}
+.card:hover .card-glow-line { transform: scaleX(1); }
+
+/* Shoebox price tag — signature element */
+.shoe-tag {
+  font-family: var(--font-display);
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: 0.35rem 0.8rem;
+  border-radius: 0.25rem;
+  transform: rotate(-6deg);
+  display: inline-block;
+  box-shadow: 2px 3px 0 rgba(0,0,0,0.4);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.card:hover .shoe-tag { transform: rotate(-3deg) scale(1.05); }
+
+/* Angled section divider */
+.angle-divider {
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+}
+
+/* Inputs */
+.input-field {
+  background: var(--bg-alt);
+  border: 1.5px solid var(--line);
+  color: var(--ink);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.input-field:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(200,255,61,0.15);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg-card); border-radius: 8px; border: 2px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-2); }

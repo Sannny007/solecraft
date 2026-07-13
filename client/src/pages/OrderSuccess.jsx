@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
+import { CheckCircle2 } from 'lucide-react';
 
 const OrderSuccess = () => {
   return (
-    <div className="p-6 text-center mt-20">
-      <h1 className="text-4xl font-bold text-green-400 mb-4">Order Placed</h1>
-      <p className="text-gray-400 mb-6">Thank you for you order.</p>
-      <Link to="/" className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-semibold">Continue Shopping</Link>
+    <div className="min-h-[70vh] flex flex-col items-center justify-center px-6 text-center animate-fadeUp">
+      <CheckCircle2 size={64} className="text-[var(--accent)] mb-4 animate-float" />
+      <h1 className="font-display text-4xl mb-3">ORDER PLACED</h1>
+      <p className="text-[var(--ink-dim)] mb-8">Thanks for the order — we're already lacing up.</p>
+      <Link to="/" className="btn-primary text-sm">Continue Shopping</Link>
     </div>
   );
-}
+};
 
-export default OrderSuccess
+export default OrderSuccess;

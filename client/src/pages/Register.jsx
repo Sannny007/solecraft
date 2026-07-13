@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from 'react-router-dom';
+import { UserPlus } from 'lucide-react';
 import { registerUser } from "../redux/slices/authSlice";
-
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -10,50 +11,57 @@ const Register = () => {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const result = await dispatch(registerUser({ name, email, password }));
-  if (registerUser.fulfilled.match(result)) {
-    setEmail('');
-    setPassword('');
-  }
-};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const result = await dispatch(registerUser({ name, email, password }));
+    if (registerUser.fulfilled.match(result)) {
+      setEmail('');
+      setPassword('');
+    }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <form onSubmit={handleSubmit} className="bg-gray-800 p-8 w-80 h-110 space-y-4 rounded-tr-[64px] rounded-bl-[64px]  shadow-[8px_-8px_20px_rgba(59,130,246,0.35)]">
-        <h1 className="text-2xl font-bold mb-4">Register</h1>
+    <div className="min-h-[85vh] flex items-center justify-center px-4 py-12">
+      <form onSubmit={handleSubmit} className="card w-full max-w-sm p-8 space-y-5 animate-fadeUp">
+        <div className="text-center mb-2">
+          <UserPlus className="mx-auto mb-2 text-[var(--accent)]" size={28} />
+          <h1 className="font-display text-3xl">JOIN SOLECRAFT</h1>
+          <p className="text-[var(--ink-dim)] text-sm mt-1">Start designing your own pair</p>
+        </div>
         <input
           type="text"
           placeholder="Enter name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full p-2 rounded bg-gray-700 outline-none transition duration-300 hover:scale-110"
+          className="input-field w-full"
+          required
         />
-
         <input
           type="email"
           placeholder="joe@gmail.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-2 rounded bg-gray-700 outline-none transition duration-300 hover:scale-110"
+          className="input-field w-full"
+          required
         />
-
         <input
           type="password"
           placeholder="Enter your password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-2 rounded bg-gray-700 outline-none transition duration-300 hover:scale-110"
+          className="input-field w-full"
+          required
         />
-
-        <button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 transition duration-300 hover:scale-110 p-2 rounded-3xl">
+        <button type="submit" disabled={loading} className="btn-primary w-full">
           {loading ? 'Creating account...' : 'Register'}
         </button>
-        {error && <p className="text-red-400 text-sm">{error}</p>}
+        {error && <p className="text-[var(--accent-2)] text-sm text-center">{error}</p>}
+        <p className="text-center text-sm text-[var(--ink-dim)]">
+          Already have an account? <Link to="/login" className="text-[var(--accent)] hover:underline">Login</Link>
+        </p>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;

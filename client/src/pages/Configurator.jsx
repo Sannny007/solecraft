@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
+import { Check, ShoppingCart, RotateCcw } from 'lucide-react';
 import { fetchProducts } from '../redux/slices/productSlice';
 import SneakerModel from '../components/SneakerModel';
 import { addToCart } from '../redux/slices/cartSlice';
@@ -16,7 +17,6 @@ const Configurator = () => {
   const dispatch = useDispatch();
   const { items, loading } = useSelector((state) => state.products);
   const [added, setAdded] = useState(false);
-
   const [colors, setColors] = useState({});
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const Configurator = () => {
   const product = items.find((p) => p._id === id);
 
   if (loading) return <Spinner />;
-  if (!product) return <p className="p-6">Product not found</p>;
+  if (!product) return <p className="p-6 text-[var(--ink-dim)]">Product not found</p>;
 
   const handleAddToCart = () => {
     dispatch(addToCart({
@@ -38,76 +38,87 @@ const Configurator = () => {
       colors,
     }));
     setAdded(true);
-    setTimeout(() => setAdded(false), 2000); // revert after 2 sec
+    setTimeout(() => setAdded(false), 2000);
   };
 
-  return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold">{product.name}</h1>
-      <p className="text-gray-400 mt-2">{product.description}</p>
-      <p className="text-purple-400 font-bold mt-2">₹{product.basePrice}</p>
+  const ColorRow = ({ label, meshKey }) => (
+    <div>
+      <p className="text-sm text-[var(--ink-dim)] mb-2 tracking-wide uppercase">{label}</p>
+      <div className="flex gap-3 flex-wrap">
+        {SWATCHES.map((color) => {
+          const active = colors[meshKey] === color;
+          return (
+            <button
+              key={`${meshKey}-${color}`}
+              onClick={(e) => {
+                setColors((prev) => ({ ...prev, [meshKey]: color }));
+                gsap.fromTo(
+                  e.currentTarget,
+                  { scale: 1.3 },
+                  { scale: 1, duration: 0.3, ease: 'back.out(3)' }
+                );
+              }}
+              className="relative w-10 h-10 rounded-full transition-all duration-300 hover:scale-110"
+              style={{
+                backgroundColor: color,
+                border: active ? '2px solid var(--accent)' : '2px solid var(--line)',
+                boxShadow: active ? '0 0 0 3px rgba(200,255,61,0.2)' : 'none',
+              }}
+              aria-label={`${label} ${color}`}
+            >
+              {active && (
+                <Check
+                  size={16}
+                  className="absolute inset-0 m-auto"
+                  style={{ color: ['#FFFFFF', '#C9A227'].includes(color) ? '#0c0b0a' : '#fff' }}
+                />
+              )}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
 
-      <div className="mt-6 bg-gray-800 rounded-lg h-96">
-        <Canvas camera={{ position: [0, 1, 5], fov: 50 }}>
-          <Suspense fallback={null}>
-            <ambientLight intensity={0.8} />
-            <directionalLight position={[5, 5, 5]} intensity={1} />
-            <SneakerModel modelPath={product.modelPath} colors={colors} />
-          </Suspense>
-          <OrbitControls minDistance={2} maxDistance={10} />
-        </Canvas>
+  return (
+    <div className="p-6 max-w-6xl mx-auto animate-fadeUp">
+      <div className="mb-6">
+        <h1 className="font-display text-4xl">{product.name}</h1>
+        <p className="text-[var(--ink-dim)] mt-2 max-w-xl">{product.description}</p>
+        <span className="shoe-tag text-sm mt-3">₹{product.basePrice}</span>
       </div>
 
-      <div className="mt-6 space-y-4">
-        <div>
-          <p className="text-sm text-gray-400 mb-2">Body Color</p>
-          <div className="flex gap-3">
-            {SWATCHES.map((color) => (
-              <button
-                key={`body-${color}`}
-                onClick={(e) => {
-                  setColors((prev) => ({ ...prev, 'rb1004_rb_r_0': color }));
-                  gsap.fromTo(
-                    e.currentTarget,
-                    { scale: 1.3 },
-                    { scale: 1, duration: 0.3, ease: 'back.out(3)' }
-                  );
-                }}
-                className="w-10 h-10 rounded-full border-2 border-gray-600 hover:border-white transition-colors"
-                style={{ backgroundColor: color }}
-              />
-            ))}
+      <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-8">
+        {/* 3D Viewer */}
+        <div className="card h-96 lg:h-[520px] relative overflow-hidden">
+          <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5 text-xs text-[var(--ink-dim)] bg-[var(--bg)]/60 backdrop-blur px-3 py-1.5 rounded-full">
+            <RotateCcw size={12} /> Drag to rotate
           </div>
+          <Canvas camera={{ position: [0, 1, 5], fov: 50 }}>
+            <Suspense fallback={null}>
+              <ambientLight intensity={0.8} />
+              <directionalLight position={[5, 5, 5]} intensity={1} />
+              <SneakerModel modelPath={product.modelPath} colors={colors} />
+            </Suspense>
+            <OrbitControls minDistance={2} maxDistance={10} autoRotate autoRotateSpeed={1.2} />
+          </Canvas>
         </div>
 
-        <div>
-          <p className="text-sm text-gray-400 mb-2">Sole Color</p>
-          <div className="flex gap-3">
-            {SWATCHES.map((color) => (
-              <button
-                key={`sole-${color}`}
-                onClick={(e) => {
-                  setColors((prev) => ({ ...prev, 'rb1000_rb_r_0': color }));
-                  gsap.fromTo(
-                    e.currentTarget,
-                    { scale: 1.3 },
-                    { scale: 1, duration: 0.3, ease: 'back.out(3)' }
-                  );
-                }}
-                className="w-10 h-10 rounded-full border-2 border-gray-600 hover:border-white transition-colors"
-                style={{ backgroundColor: color }}
-              />
-            ))}
+        {/* Controls */}
+        <div className="space-y-6">
+          <div className="card p-6 space-y-6">
+            <ColorRow label="Body Color" meshKey="rb1004_rb_r_0" />
+            <ColorRow label="Sole Color" meshKey="rb1000_rb_r_0" />
           </div>
-        </div>
 
-        <button
-          onClick={handleAddToCart}
-          className={`mt-4 px-6 py-3 rounded-lg font-semibold transition-colors ${added ? 'bg-green-600' : 'bg-purple-600 hover:bg-purple-700'
-            }`}
-        >
-          {added ? 'Added to Cart ✓' : 'Add to Cart'}
-        </button>
+          <button
+            onClick={handleAddToCart}
+            className={added ? 'btn-primary w-full' : 'btn-primary w-full'}
+            style={added ? { background: 'var(--accent)' } : undefined}
+          >
+            {added ? <><Check size={18} /> Added to Cart</> : <><ShoppingCart size={18} /> Add to Cart</>}
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Package } from 'lucide-react';
 import { getMyOrders } from '../redux/api/orders';
 import Spinner from '../components/Spinner';
-
 
 const MyOrders = () => {
   const { token } = useSelector((state) => state.auth);
@@ -23,40 +23,41 @@ const MyOrders = () => {
     fetchOrders();
   }, [token]);
 
-  if (loading) return <Spinner />
+  if (loading) return <Spinner />;
 
   if (orders.length === 0) {
-    return(
-      <div className='p-6'>
-        <h1 className='text-3xl font-bold mb-4'>My Orders</h1>
-        <p className='text-gray-400'>You haven't placed any orders yet.</p>
+    return (
+      <div className="min-h-[70vh] flex flex-col items-center justify-center px-6 text-center animate-fadeIn">
+        <Package size={48} className="text-[var(--ink-dim)] mb-4" />
+        <h1 className="font-display text-3xl mb-2">MY ORDERS</h1>
+        <p className="text-[var(--ink-dim)]">You haven't placed any orders yet.</p>
       </div>
     );
   }
 
   return (
-    <div className='p-6'>
-      <h1 className='text-3xl font-bold mb-6'>My Orders</h1>
-      <div className='space-y-4'>
-        {orders.map((order) => (
-          <div key = {order._id} className='bg-gray-800 rounded-lg p-4'>
-            <div className='flex justify-between items-center mb-2'>
-              <span className='text-sm text-gray-400'>
-                Order #{order._id.slice(-6).toUpperCase()}
+    <div className="p-6 max-w-3xl mx-auto">
+      <h1 className="font-display text-4xl mb-8">MY ORDERS</h1>
+      <div className="space-y-4">
+        {orders.map((order, i) => (
+          <div key={order._id} className="card p-5 animate-fadeUp" style={{ animationDelay: `${i * 0.08}s` }}>
+            <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
+              <span className="text-sm text-[var(--ink-dim)] tracking-wide">
+                ORDER #{order._id.slice(-6).toUpperCase()}
               </span>
-              <span className='text-sm bg-purple-600 px-2 py-1 rounded'>
+              <span className="text-xs font-semibold bg-[var(--accent)] text-[var(--accent-ink)] px-3 py-1 rounded-full uppercase tracking-wide">
                 {order.status}
               </span>
             </div>
-            <div className='space-y-1'>
-              {order.items.map((item, i) => (
-                <p key={i} className='text-sm'>
-                  {item.name} - ₹{item.basePrice}
+            <div className="space-y-1 mb-2">
+              {order.items.map((item, idx) => (
+                <p key={idx} className="text-sm text-[var(--ink-dim)]">
+                  {item.name} &mdash; ₹{item.basePrice}
                 </p>
               ))}
             </div>
-            <p className='text-purple-400 font-bold mt-2'>Total: ₹{order.totalAmount}</p>
-            <p className='text-xs text-gray-500 mt-1'>
+            <span className="shoe-tag text-xs">Total ₹{order.totalAmount}</span>
+            <p className="text-xs text-[var(--ink-dim)] mt-3">
               Placed on {new Date(order.createdAt).toLocaleDateString()}
             </p>
           </div>
@@ -64,6 +65,6 @@ const MyOrders = () => {
       </div>
     </div>
   );
-}
+};
 
 export default MyOrders;
